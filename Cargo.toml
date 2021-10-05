@@ -1,0 +1,9 @@
+[package]
+name = "ipmiraw"
+version = "0.1.0"
+edition = "2018"
+description = "API for submitting raw commands to an IPMI device"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+libc = "0.2"
