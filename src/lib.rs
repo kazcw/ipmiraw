@@ -1,7 +1,7 @@
 pub mod si {
     #[link(name = "ipmiraw")]
     extern "C" {
-        fn si_cmd(fd: RawFd, netfn: u8, cmd: u8, data: *mut u8, data_len: u16) -> c_int;
+        fn si_cmd(fd: RawFd, netfn: u8, cmd: u8, data: *const u8, data_len: u16) -> c_int;
     }
 
     use libc::{c_int, O_NONBLOCK};
@@ -29,18 +29,16 @@ pub mod si {
         }
 
         #[inline]
-        pub fn cmd(&self, n: u8, c: u8, d: &mut [u8]) -> u8 {
-            debug_assert!(d.len() > 0);
+        pub fn cmd(&self, n: u8, c: u8, d: &[u8]) {
             unsafe {
                 si_cmd(
                     self.f.as_raw_fd(),
                     n,
                     c,
-                    d.as_mut_ptr(),
+                    d.as_ptr(),
                     d.len().try_into().unwrap(),
                 );
             }
-            d[0]
         }
     }
 }
