@@ -17,12 +17,6 @@ pub mod si {
         f: File,
     }
 
-    #[derive(Debug)]
-    pub struct Error {
-        errno: c_int,
-    }
-    pub type Result<T> = std::result::Result<T, Error>;
-
     impl Ipmi {
         #[inline]
         pub fn open(path: impl AsRef<Path>) -> io::Result<Self> {
@@ -35,7 +29,7 @@ pub mod si {
         }
 
         #[inline]
-        pub fn cmd(&self, n: u8, c: u8, d: &[u8]) -> Result<()> {
+        pub fn cmd(&self, n: u8, c: u8, d: &[u8]) -> io::Result<()> {
             let result = unsafe {
                 si_cmd(
                     self.f.as_raw_fd(),
@@ -49,7 +43,7 @@ pub mod si {
             };
             match result {
                 0 => Ok(()),
-                e => Err(Error { errno: e }),
+                e => Err(io::Error::from_raw_os_error(e as i32)),
             }
         }
     }

@@ -1,9 +1,12 @@
 [package]
 name = "ipmiraw"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2018"
 description = "API for submitting raw commands to an IPMI device"
 license = "MIT OR Apache-2.0"
+keywords = ["ffi", "linux"]
+categories = ["os", "hardware-support"]
+repository = "https://github.com/kazcw/ipmiraw-rs"
 
 [dependencies]
 libc = "0.2"
